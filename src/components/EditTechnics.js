@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter, Redirect} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
 
@@ -23,7 +23,6 @@ class AddEmployees extends Component {
         e.preventDefault();
         axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/edit', JSON.stringify({'name': name, 'model': model, 'year': year, 'subdivision_id': this.props.match.params.id}), axiosPOSTconfig)
             .then((response) => {
-                console.log(response);
                 this.setState({status: response.data.status});
             })
             .catch((error) => {console.log(error)});
@@ -32,8 +31,6 @@ class AddEmployees extends Component {
     componentDidMount() {
         axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/edit')
             .then((response) => {
-                console.log('res emp: ', response.data.result_tech.rows);
-                console.log(this.state);
                 this.setState({name: response.data.result_tech.rows[0].name, model: response.data.result_tech.rows[0].model, year: response.data.result_tech.rows[0].year});
             })
             .catch((error) => {console.log(error); this.setState({ message: error.message })});

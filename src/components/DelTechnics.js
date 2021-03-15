@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 
-class DoneRepair extends Component {
+class DelTechnics extends Component {
 
     constructor(props) {
         super(props);
@@ -12,7 +12,7 @@ class DoneRepair extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://127.0.0.1:5000/api/repairs/technics/' + this.props.match.params.id + '/done')
+        axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/decom')
             .then((response) => {this.setState({status: response.data.status});})
             .catch((error) => {console.log(error); this.setState({ message: error.message })});
     }
@@ -20,7 +20,7 @@ class DoneRepair extends Component {
     render() {
         if(this.state.status === 1){
             return (
-                <Redirect to={'/repairs/technics'}/>
+                <Redirect to={'/subdivisions/' + this.props.match.params.id + '/technics'}/>
             );
         }
         return (
@@ -29,4 +29,4 @@ class DoneRepair extends Component {
     }
 }
 
-export default withRouter(DoneRepair);
+export default withRouter(DelTechnics);

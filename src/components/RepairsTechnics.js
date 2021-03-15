@@ -13,7 +13,7 @@ class Technics extends Component {
 
     componentDidMount() {
         axios.get('http://127.0.0.1:5000/api/repairs/technics')
-            .then((response) => {console.log(response.data.result.rows); this.setState({rows: response.data.result.rows});})
+            .then((response) => {this.setState({rows: response.data.result.rows});})
             .catch((error) => {console.log(error); this.setState({ message: error.message })});
     }
 

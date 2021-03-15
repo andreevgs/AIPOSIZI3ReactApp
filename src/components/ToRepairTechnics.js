@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter, Redirect} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
 
@@ -21,7 +21,6 @@ class ToRepairTechnics extends Component {
     componentDidMount() {
         axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair')
             .then((response) => {
-                console.log(response.data.result_emp.rows);
                 this.setState({emp_rows: response.data.result_emp.rows});
                 this.setState({rep_emp_rows: response.data.result_rep_emp.rows});
                 this.setState({employee_id_who_gave: response.data.result_emp.rows[0].id, employee_id_who_accepted: response.data.result_rep_emp.rows[0].id, employee_id_who_repair: response.data.result_rep_emp.rows[0].id})
@@ -38,11 +37,9 @@ class ToRepairTechnics extends Component {
         let {type_of_repair, repair_time, employee_id_who_gave, employee_id_who_accepted, employee_id_who_repair} = this.state;
         axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair', JSON.stringify({'type_of_repair': type_of_repair, 'repair_time': repair_time, 'employee_id_who_gave': employee_id_who_gave, 'employee_id_who_accepted': employee_id_who_accepted, 'employee_id_who_repair': employee_id_who_repair}), axiosPOSTconfig)
             .then((response) => {
-                console.log(response);
                 this.setState({status: response.data.status});
             })
             .catch((error) => {console.log(error)});
-        // console.log('res: ', {type_of_repair, repair_time, employee_id_who_gave, employee_id_who_accepted, employee_id_who_repair});
     }
 
     render() {

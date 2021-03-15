@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter, Redirect} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 
 class DelEmployee extends Component {
@@ -13,7 +13,7 @@ class DelEmployee extends Component {
 
     componentDidMount() {
         axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/' + this.props.match.params.employee_id + '/del')
-            .then((response) => {console.log(response.data); this.setState({status: response.data.status});})
+            .then((response) => {this.setState({status: response.data.status});})
             .catch((error) => {console.log(error); this.setState({ message: error.message })});
     }
 

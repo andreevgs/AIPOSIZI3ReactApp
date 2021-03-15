@@ -3,14 +3,12 @@ import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
 const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
 
-class AddTechnics extends Component {
+class AddSubdivision extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            model: '',
-            year: ''
+            name: ''
         };
     }
 
@@ -20,8 +18,8 @@ class AddTechnics extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        let {name, model, year} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/add', JSON.stringify({'name': name, 'model': model, 'year': year}), axiosPOSTconfig)
+        let {name} = this.state;
+        axios.post('http://127.0.0.1:5000/api/subdivisions/add', JSON.stringify({'name': name}), axiosPOSTconfig)
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -29,13 +27,12 @@ class AddTechnics extends Component {
     }
 
     render() {
-        let {name, model, year} = this.state;
+        let {name} = this.state;
         if(this.state.status === 1) {
             return (
-                <Redirect to={'/subdivisions/' + this.props.match.params.id + '/technics'}/>
+                <Redirect to={'/subdivisions'}/>
             );
         }
-
         return (
             <main role="main" class="container">
                 <div class="jumbotron">
@@ -44,10 +41,6 @@ class AddTechnics extends Component {
                     <form onSubmit={this.onSubmit}>
                         <p>Введите название:</p>
                         <input type="text" name="name" value={name} onChange={this.onChange}/>
-                        <p>Введите модель:</p>
-                        <input type="text" name="model" value={model} onChange={this.onChange}/>
-                        <p>Введите год выпуска:</p>
-                        <input type="text" name="year" value={year} onChange={this.onChange}/><br/>
                         <input type="submit"/>
                     </form>
                 </div>
@@ -56,4 +49,4 @@ class AddTechnics extends Component {
     }
 }
 
-export default withRouter(AddTechnics);
+export default withRouter(AddSubdivision);

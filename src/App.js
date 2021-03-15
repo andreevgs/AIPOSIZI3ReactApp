@@ -3,10 +3,14 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Subdivisions from './components/Subdivisions';
 import Subdivision from './components/Subdivision';
+import AddSubdivision from './components/AddSubdivision';
+
 import Technics from './components/Technics';
 import AddTechnics from './components/AddTechnics';
 import EditTechnics from './components/EditTechnics';
 import ToRepairTechnics from './components/ToRepairTechnics';
+import DelTechnics from './components/DelTechnics';
+
 import Employees from './components/Employees';
 import AddEmployees from './components/AddEmployees';
 import DelEmployee from './components/DelEmployee';
@@ -27,7 +31,9 @@ class App extends Component {
          <NavBar/>
          <Route exact path="/" component={Home} />
          <Route exact path='/subdivisions' component={Subdivisions} />
+         <Route exact path='/subdivisions/add' component={AddSubdivision} />
          <Route exact path='/subdivisions/:id' component={Subdivision} />
+
          <Route exact path='/subdivisions/:id/technics' component={Technics} />
          <Route exact path='/subdivisions/:id/technics/add' component={AddTechnics} />
          <Route exact path='/subdivisions/:id/employees' component={Employees} />
@@ -36,6 +42,7 @@ class App extends Component {
          <Route exact path='/subdivisions/:id/employees/:employee_id/edit' component={EditEmployee} />
          <Route exact path='/subdivisions/:id/technics/:technics_id/edit' component={EditTechnics} />
          <Route exact path='/subdivisions/:id/technics/:technics_id/torepair' component={ToRepairTechnics} />
+         <Route exact path='/subdivisions/:id/technics/:technics_id/decom' component={DelTechnics} />
 
          <Route exact path='/repairs' component={Repairs} />
          <Route exact path='/repairs/technics' component={RepairsTechnics} />

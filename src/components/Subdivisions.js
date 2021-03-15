@@ -21,8 +21,7 @@ class Subdivisions extends Component {
         return (
             <main role="main" class="container">
                 <div class="jumbotron">
-                    <a href="/subdivisions/employees">Показать всех сотрудников</a><br/>
-                    <a href="/subdivisions/add">Создать подразделение</a><br/><br/>
+                    <Link to={'/subdivisions/add'}>Создать подразделение</Link>
                 </div>
                 {this.state.rows === null && <p>Loading menu...</p>}
                 {this.state.rows && this.state.rows.map(item => (

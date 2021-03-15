@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
 
@@ -24,7 +24,6 @@ class AddRepairsEmployees extends Component {
         let {name, age, sex, position} = this.state;
         axios.post('http://127.0.0.1:5000/api/repairs/employees/add', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position}), axiosPOSTconfig)
             .then((response) => {
-                console.log(response);
                 this.setState({status: response.data.status});
             })
             .catch((error) => {console.log(error)});
