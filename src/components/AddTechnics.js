@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
-const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
+import AuthService from "../services/AuthService";
 
 class AddTechnics extends Component {
 
@@ -21,7 +21,7 @@ class AddTechnics extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {name, model, year} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/add', JSON.stringify({'name': name, 'model': model, 'year': year}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/add', JSON.stringify({'name': name, 'model': model, 'year': year}), {headers: {'Content-Type': 'application/json', 'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -29,6 +29,9 @@ class AddTechnics extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {name, model, year} = this.state;
         if(this.state.status === 1) {
             return (

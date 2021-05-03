@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
+import AuthService from "../services/AuthService";
 
 class Technics extends Component {
 
@@ -12,12 +13,15 @@ class Technics extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://127.0.0.1:5000/api/repairs/technics')
+        axios.get('http://127.0.0.1:5000/api/repairs/technics', {headers: {'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {this.setState({rows: response.data.result.rows});})
             .catch((error) => {console.log(error); this.setState({ message: error.message })});
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         return (
             <main role="main" class="container">
                 <div>

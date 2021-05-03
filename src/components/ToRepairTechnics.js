@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
-const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
+import AuthService from "../services/AuthService";
 
 class ToRepairTechnics extends Component {
 
@@ -19,7 +19,7 @@ class ToRepairTechnics extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair')
+        axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair', {headers: {'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({emp_rows: response.data.result_emp.rows});
                 this.setState({rep_emp_rows: response.data.result_rep_emp.rows});
@@ -35,7 +35,7 @@ class ToRepairTechnics extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {type_of_repair, repair_time, employee_id_who_gave, employee_id_who_accepted, employee_id_who_repair} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair', JSON.stringify({'type_of_repair': type_of_repair, 'repair_time': repair_time, 'employee_id_who_gave': employee_id_who_gave, 'employee_id_who_accepted': employee_id_who_accepted, 'employee_id_who_repair': employee_id_who_repair}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/technics/' + this.props.match.params.technics_id + '/torepair', JSON.stringify({'type_of_repair': type_of_repair, 'repair_time': repair_time, 'employee_id_who_gave': employee_id_who_gave, 'employee_id_who_accepted': employee_id_who_accepted, 'employee_id_who_repair': employee_id_who_repair}), {headers: {'Content-Type': 'application/json', 'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -43,6 +43,9 @@ class ToRepairTechnics extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {type_of_repair, repair_time, employee_id_who_gave, employee_id_who_accepted, employee_id_who_repair} = this.state;
         if(this.state.status === 1) {
             return (

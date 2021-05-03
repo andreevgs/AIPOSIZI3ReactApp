@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, withRouter, Redirect} from 'react-router-dom';
+import AuthService from "../services/AuthService";
 
 class RepairsTechnics extends Component {
 
@@ -8,6 +9,9 @@ class RepairsTechnics extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         return (
             <main role="main" class="container">
                 <div class="jumbotron">

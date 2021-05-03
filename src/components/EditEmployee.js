@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
-const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
+import AuthService from "../services/AuthService";
 
 class AddEmployees extends Component {
 
@@ -22,7 +22,7 @@ class AddEmployees extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {name, age, sex, position} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/' + this.props.match.params.employee_id + '/edit', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position, 'subdivision_id': this.props.match.params.id}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/' + this.props.match.params.employee_id + '/edit', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position, 'subdivision_id': this.props.match.params.id}), {headers: {'Content-Type': 'application/json', 'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -30,7 +30,7 @@ class AddEmployees extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/' + this.props.match.params.employee_id + '/edit')
+        axios.get('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/' + this.props.match.params.employee_id + '/edit', {headers: {'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({name: response.data.result_emp.rows[0].full_name, age: response.data.result_emp.rows[0].age, sex: response.data.result_emp.rows[0].sex, position: response.data.result_emp.rows[0].position});
             })
@@ -38,6 +38,9 @@ class AddEmployees extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {name, age, sex, position} = this.state;
         if(this.state.status === 1) {
             return (

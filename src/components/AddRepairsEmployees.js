@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
+import AuthService from "../services/AuthService";
 const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
 
 class AddRepairsEmployees extends Component {
@@ -22,7 +23,7 @@ class AddRepairsEmployees extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {name, age, sex, position} = this.state;
-        axios.post('http://127.0.0.1:5000/api/repairs/employees/add', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/repairs/employees/add', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position}), {headers: {'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -30,6 +31,9 @@ class AddRepairsEmployees extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {name, age, sex, position} = this.state;
         return (
             <main role="main" class="container">

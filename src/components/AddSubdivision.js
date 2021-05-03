@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
-const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
+import AuthService from "../services/AuthService";
 
 class AddSubdivision extends Component {
 
@@ -19,7 +19,7 @@ class AddSubdivision extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {name} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/add', JSON.stringify({'name': name}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/subdivisions/add', JSON.stringify({'name': name}), {headers: {'Content-Type': 'application/json', 'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -27,6 +27,9 @@ class AddSubdivision extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {name} = this.state;
         if(this.state.status === 1) {
             return (

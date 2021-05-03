@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter, Redirect} from 'react-router-dom';
 import axios from 'axios';
-const axiosPOSTconfig = {headers: {'Content-Type': 'application/json'}};
+import AuthService from "../services/AuthService";
 
 class AddEmployees extends Component {
 
@@ -22,7 +22,7 @@ class AddEmployees extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let {name, age, sex, position} = this.state;
-        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/add', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position, 'subdivision_id': this.props.match.params.id}), axiosPOSTconfig)
+        axios.post('http://127.0.0.1:5000/api/subdivisions/' + this.props.match.params.id + '/employees/add', JSON.stringify({'name': name, 'age': age, 'sex': sex, 'position': position, 'subdivision_id': this.props.match.params.id}), {headers: {'Content-Type': 'application/json', 'x-access-token': AuthService.getCurrentUser().accessToken}})
             .then((response) => {
                 this.setState({status: response.data.status});
             })
@@ -30,6 +30,9 @@ class AddEmployees extends Component {
     }
 
     render() {
+        if(!AuthService.getCurrentUser()){
+            return <Redirect to={'/login'}/>;
+        }
         let {name, age, sex, position} = this.state;
         if(this.state.status === 1) {
             return (

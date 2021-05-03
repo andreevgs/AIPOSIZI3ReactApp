@@ -1,8 +1,12 @@
 import React from 'react';
-import {Link, withRouter, useParams} from 'react-router-dom';
+import {Link, withRouter, useParams, Redirect} from 'react-router-dom';
+import AuthService from "../services/AuthService";
 
 const Subdivision = () => {
     let {id} = useParams();
+    if(!AuthService.getCurrentUser()){
+        return <Redirect to={'/login'}/>;
+    }
     if(!isNaN(id)){
         return (
             <main role="main" class="container">

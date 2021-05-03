@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
+import Login from './components/Login';
+import Registration from './components/Registration';
+
 import Subdivisions from './components/Subdivisions';
 import Subdivision from './components/Subdivision';
 import AddSubdivision from './components/AddSubdivision';
@@ -30,6 +33,10 @@ class App extends Component {
       <BrowserRouter>
          <NavBar/>
          <Route exact path="/" component={Home} />
+         <Route exact path="/login" component={Login} />
+         <Route exact path="/registration" component={Registration} />
+         {/* <Route exact path="/logout" component={Home} /> */}
+
          <Route exact path='/subdivisions' component={Subdivisions} />
          <Route exact path='/subdivisions/add' component={AddSubdivision} />
          <Route exact path='/subdivisions/:id' component={Subdivision} />
